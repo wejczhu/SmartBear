@@ -15,6 +15,7 @@ private:
         ERROR_ASR_CURL = 102 // 识别 curl 错误
     };
 
+public:
     // Get the speeck token and return status 
     static ReturnCodeE SpeechGetToken(const char* apiKey, const char* secretKey, const char* scope, char* token);
 
@@ -23,7 +24,6 @@ private:
 
     // Get string from json file
     static ReturnCodeE ObtainJsonStr(const char* json, const char* key, char* value, int valueSize);
-
 };
 
 

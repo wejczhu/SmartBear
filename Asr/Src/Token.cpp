@@ -4,15 +4,17 @@
 #include <iostream>
 
 // 解析response json ， 获取token，验证scope信息
-ReturnCodeE TokenC::SpeechGetToken(const char* apiKey, const char* secretKey, const char* scope, char* token)
+TokenC::ReturnCodeE TokenC::SpeechGetToken(const char* apiKey, const char* secretKey, const char* scope, char* token)
 {
-    char urlPattern[];
-    char url[200];
+    //char urlPattern[];
+    std::string url = "http://www.baidu.com";
     char* response = nullptr; 
 
     //std::cout << u
 
     std::cout << "url is : " << url << std::endl;
+
+    curl_global_init(CURL_GLOBAL_ALL);
 
     CURL* curl = curl_easy_init();
 
@@ -23,12 +25,18 @@ ReturnCodeE TokenC::SpeechGetToken(const char* apiKey, const char* secretKey, co
     }
 
     curl_easy_setopt(curl, CURLOPT_URL, url); // 注意返回值判读
-    curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 5);
-    curl_easy_setopt(curl, CURLOPT_TIMEOUT, 60); // 60s超时
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+    //curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 5);
+    //curl_easy_setopt(curl, CURLOPT_TIMEOUT, 60); // 60s超时
+    //curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
+    //curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
 
-    
+    CURLcode resCurl = curl_easy_perform(curl);
+
+    if (resCurl != CURLE_OK)
+    {
+        std::cout << "not ok" << std::endl;
+    }
+
 
     // char url_pattern[] = "%s?grant_type=client_credentials&client_id=%s&client_secret=%s";
     // char url[200];
@@ -56,6 +64,6 @@ ReturnCodeE TokenC::SpeechGetToken(const char* apiKey, const char* secretKey, co
     //     }
     // }
     // free(response);
-    // curl_easy_cleanup(curl);
-    // return res;
+    curl_easy_cleanup(curl);
+    return ERROR_TOKEN_CURL;
 }
